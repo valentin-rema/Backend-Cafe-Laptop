@@ -3,11 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="google-signin-client_id" content="603156291706-eotgvipodrbpqhaqk1i9c8ji0ilblrim.apps.googleusercontent.com">
+
     <title>Acceso denegado</title>
 </head>
 <body>
 
-    <h1>Acceso Denegado</h1>
-    
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <h1>Bienvenidos A La Pagina Web</h1> 
+    <hr>
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <a href="#" onclick="signOut();">Sign out</a>
+
+    <script>
+
+        var url = (window.location.hostname.includes('localhost'))
+                  ? "http://localhost:8080/api/auth/google"
+                  : "www.heroku.com"
+
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+            //ok una vez presionando el boton vamos a hacer lo siguiente
+            var id_token = googleUser.getAuthResponse().id_token;
+            
+            const data = { id_token };
+
+
+            //una vez teniendo el token de la autenticacion de google vamo a hacer lo siguiente
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type' : 'application/json' },
+                body: JSON.stringify(data)
+            }).then( resp => resp.json())
+              .then( data => console.log('Nuestro server: ',data))
+              .catch(console.log);
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
+        }
+    </script>
 </body>
 </html>

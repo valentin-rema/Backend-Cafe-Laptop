@@ -2,7 +2,7 @@
 
 const { Router } = require('express');
 
-const { login } = require('../controllers/auth');
+const { login, loginGoogle } = require('../controllers/auth');
 
 const { validarCampos }  = require('../middlewares/validar-campos');
 
@@ -20,6 +20,18 @@ rutas.post('/', [
     validarCampos
 ],
 login);
+
+
+//vamos a agregar una nueva ruta de autenticacion a travez de google 
+rutas.post('/google', [
+    //a continuacion vamos a agregar los middlewares que vamos a necesitar 
+    //vamos a ver si nos mandaron el token
+    check('id_token', 'Error el token es necesario').not().isEmpty(),
+    validarCampos
+],
+loginGoogle
+)
+
 
 module.exports = rutas;
 

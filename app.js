@@ -6,8 +6,8 @@ const server = new Server();
 
 server.listen();
 
+//hemos terminado con la seccion 12 procedemos a guardar los nuevos cambios a git
 
-//vamos a guardar los cambios porque acabamos de terminar con la seccion 11 asi que manos a la obra
 
 
 

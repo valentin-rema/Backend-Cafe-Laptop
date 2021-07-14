@@ -8,11 +8,16 @@ class Server {
     constructor() {
         this.app  = express();
         this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
-        
-        //vamos a crear el path para la autenticacion
-        this.authPath = '/api/auth';
 
+        //vamos a crear una varible que almacene todas las rutas de nuestro RestServer
+      
+        this.paths = {
+            usuarios:   '/api/usuarios',
+            login:      '/api/auth',
+            categorias: '/api/categorias',
+            productos: '/api/productos',
+            busqueda: '/api/busqueda'
+        }
         // Conectar a base de datos
         this.conectarDB();
 
@@ -42,8 +47,11 @@ class Server {
     }
 
     routes() {
-        this.app.use( this.usuariosPath, require('../routes/usuarios'));
-        this.app.use( this.authPath, require('../routes/auth'));
+        this.app.use( this.paths.usuarios, require('../routes/usuarios'));
+        this.app.use( this.paths.login, require('../routes/auth'));
+        this.app.use( this.paths.categorias, require('../routes/categorias'));
+        this.app.use( this.paths.productos, require('../routes/productos'));
+        this.app.use( this.paths.busqueda, require('../routes/busquedas'));
     }
 
     listen() {
@@ -54,7 +62,8 @@ class Server {
 
 }
 
-
-
-
 module.exports = Server;
+
+
+//Vamos bien ahora vamos a intentar crear el modelo para la parte de las categorias
+

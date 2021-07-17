@@ -6,7 +6,9 @@ const server = new Server();
 
 server.listen();
 
-//hemos terminado con la seccion 12 procedemos a guardar los nuevos cambios a git
+//entonces vamos a comenzar con la parte de la subida de archivos asi que manos a la obra
+
+
 
 
 

@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 
+const fileUpload = require('express-fileupload');
+
+
 const { dbConnection } = require('../database/config');
 
 class Server {
@@ -11,12 +14,15 @@ class Server {
 
         //vamos a crear una varible que almacene todas las rutas de nuestro RestServer
       
+        //vamos a ingresar una nueva ruta
+
         this.paths = {
             usuarios:   '/api/usuarios',
             login:      '/api/auth',
             categorias: '/api/categorias',
             productos: '/api/productos',
-            busqueda: '/api/busqueda'
+            busqueda: '/api/busqueda',
+            upload: '/api/uploads'
         }
         // Conectar a base de datos
         this.conectarDB();
@@ -44,6 +50,12 @@ class Server {
         // Directorio Público
         this.app.use( express.static('public') );
 
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+        }));
+
     }
 
     routes() {
@@ -52,6 +64,7 @@ class Server {
         this.app.use( this.paths.categorias, require('../routes/categorias'));
         this.app.use( this.paths.productos, require('../routes/productos'));
         this.app.use( this.paths.busqueda, require('../routes/busquedas'));
+        this.app.use( this.paths.upload, require('../routes/upload'));
     }
 
     listen() {
